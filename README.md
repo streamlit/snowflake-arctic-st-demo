@@ -45,7 +45,7 @@ Create a `.streamlit` folder with a `secrets.toml` file inside.
       ```
    Learn more about Streamlit secrets management in [our docs](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/secrets-management).
    
-   Alternatively, you can enter your Replicate API token via the text input in the app itself (once you're running the app).
+   Alternatively, you can enter your Replicate API token via the `st.text_input` widget in the app itself (once you're running the app).
 
 4. **Run the Streamlit app**
    ```bash
