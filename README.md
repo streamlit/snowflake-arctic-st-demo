@@ -1,7 +1,7 @@
 # 🤖❄️ Snowflake Arctic Chatbot
 This Streamlit app is not just any chatbot; it's your starter kit to play with Snowflake's brand new foundation model: Snowflake Arctic! Arctic was released on April 24, 2024 and is completely open-source 😍
 
-Get the full lowdown on Arctic in Adrien Treuille's [blog post]([tbd.com](http://blog.streamlit.io/introducing-snowflake-arctic/)). Snowflake Arctic is also available via [Hugging Face](https://huggingface.co/Snowflake/snowflake-arctic-instruct) 🤗 and all your favorite model gardens soon! 🔜
+Get the full lowdown on Arctic in Adrien Treuille's [blog post](http://blog.streamlit.io/introducing-snowflake-arctic/). Snowflake Arctic is also available via [Hugging Face](https://huggingface.co/Snowflake/snowflake-arctic-instruct) 🤗 and all your favorite model gardens soon! 🔜
 
 Built a cool Streamlit app using Arctic? Share it on social media with #SnowflakeArctic! We'll repost you 🫡
 
@@ -28,7 +28,7 @@ After creating a Replicate account, you can access your API token from [this pag
 
 2. **Install requirements**
    ```bash
-   pip install -r requirements.txt
+      pip install -r requirements.txt
    ```
 
 3. **Add your API token to your secrets file**\
