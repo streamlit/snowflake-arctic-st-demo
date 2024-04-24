@@ -49,13 +49,13 @@ def generate_arctic_response(prompt_input):
     
     for event in replicate.stream("snowflake/snowflake-arctic-instruct",
                            input={"prompt": f"""
-                                    <|im_start|>system
-                                    You're a helpful assistant<|im_end|>
-                                    <|im_start|>user
-                                    {string_dialogue}
-                                    <|im_end|>
-                                    <|im_start|>assistant
-                                    """,
+<|im_start|>system
+You're a helpful assistant<|im_end|>
+<|im_start|>user
+{string_dialogue}
+<|im_end|>
+<|im_start|>assistant
+""",
                                   "prompt_template": r"{prompt}",
                                   "temperature": temperature,
                                   "top_p": top_p,
