@@ -3,7 +3,7 @@ import replicate
 import os
 from transformers import AutoTokenizer
 
-# # Assuming you have a specific tokenizersu for Llama; if not, use an appropriate one like this
+# # Assuming you have a specific tokenizers for Llama; if not, use an appropriate one like this
 # tokenizer = AutoTokenizer.from_pretrained("allenai/llama")
 
 # text = "Example text to tokenize."
