@@ -60,7 +60,7 @@ Host your app for free on Streamlit Community Cloud.
 2. Click "New app" from the upper-right corner of your workspace.
 3. Fill in your repo, branch, and file path. As a shortcut, you can also click "Paste GitHub URL" to paste a link directly to `streamlit_app.py` on GitHub.
 
-#### Optional: add your Replicate API token
+#### Optional: store your Replicate API token with Community Cloud secrets
 Securely store your Replicate API token with Community Cloud's secrets management feature.
 
 ##### Add secrets before deploying
@@ -71,7 +71,7 @@ Securely store your Replicate API token with Community Cloud's secrets managemen
    REPLICATE_API_TOKEN = "your API token here"
    ```
    
-#### Add secrets after deploying
+##### Add secrets after deploying
 1. Go to [share.streamlit.io](https://share.streamlit.io/).
 2. Click the overflow menu icon (AKA hamburger icon) for your app.
 3. Click "Settings".  
