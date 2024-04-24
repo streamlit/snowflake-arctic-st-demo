@@ -73,9 +73,15 @@ def generate_arctic_response():
     
     prompt.append("<|im_start|>assistant")
     prompt.append("")
+    prompt_str = "\n".join(prompt)
     
+    if get_num_tokens(prompt_str) >= 4096:
+        st.error("Conversation length too long. Please keep it under 4096 tokens.")
+        st.button('Clear chat history', on_click=clear_chat_history, key="clear_chat_history")
+        st.stop()
+
     for event in replicate.stream("snowflake/snowflake-arctic-instruct",
-                           input={"prompt": "\n".join(prompt),
+                           input={"prompt": prompt_str,
                                   "prompt_template": r"{prompt}",
                                   "temperature": temperature,
                                   "top_p": top_p,
@@ -84,10 +90,6 @@ def generate_arctic_response():
 
 # User-provided prompt
 if prompt := st.chat_input(disabled=not replicate_api):
-    if get_num_tokens(prompt) >= 4096:
-       st.error("Your prompt is too long. Please keep it under 4096 tokens.")
-       st.stop()
-
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.write(prompt)
