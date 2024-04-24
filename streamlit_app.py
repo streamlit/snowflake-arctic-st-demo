@@ -75,8 +75,8 @@ def generate_arctic_response():
     prompt.append("")
     prompt_str = "\n".join(prompt)
     
-    if get_num_tokens(prompt_str) >= 4096:
-        st.error("Conversation length too long. Please keep it under 4096 tokens.")
+    if get_num_tokens(prompt_str) >= 3072:
+        st.error("Conversation length too long. Please keep it under 3072 tokens.")
         st.button('Clear chat history', on_click=clear_chat_history, key="clear_chat_history")
         st.stop()
 
