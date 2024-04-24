@@ -70,7 +70,7 @@ Securely store your Replicate API token with Community Cloud's secrets managemen
 3. Provide your secrets in the "Secrets" field using TOML format. For example:
    ```toml
    REPLICATE_API_TOKEN = "your API token here"
-   ```
+   ```   
 These instructions are also available in [our docs](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/secrets-management#deploy-an-app-and-set-up-secrets) (with step-by-step screenshots).
    
 ##### Add secrets after deploying
