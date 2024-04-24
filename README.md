@@ -28,7 +28,7 @@ After creating a Replicate account, you can access your API token from [this pag
 
 2. **Install requirements**
    ```bash
-   pip install -r requirements.txt
+      pip install -r requirements.txt
    ```
 
 3. **Add your API token to your secrets file**\
