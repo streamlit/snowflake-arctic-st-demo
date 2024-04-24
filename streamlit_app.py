@@ -12,11 +12,13 @@ with st.sidebar:
         replicate_api = st.secrets["REPLICATE_API_TOKEN"]
     else:
         replicate_api = st.text_input("Enter Replicate API token:", type="password")
-        if not (replicate_api.startswith("r8_") and len(replicate_api) == 40):
+        token_is_valid = replicate_api.startswith("r8_") and len(replicate_api) == 40
+        if not token_is_valid:
             st.warning(
                 "Please enter your Replicate API token, or head over to [Replicate](https://replicate.com) to create one.",
                 icon="⚠️",
             )
+
 
     os.environ["REPLICATE_API_TOKEN"] = replicate_api
     st.subheader("Adjust model parameters")
@@ -27,6 +29,7 @@ with st.sidebar:
         value=0.6,
         step=0.01,
         help="Controls the randomness of the generated text. A lower value makes the output more deterministic, while a higher value introduces more randomness.",
+        disabled=~token_is_valid,
     )
     top_p = st.sidebar.slider(
         "Top p",
@@ -35,6 +38,7 @@ with st.sidebar:
         value=0.9,
         step=0.01,
         help="Controls the variety of responses. Lower values focus on fewer options, while higher values explore more diverse options.",
+        disabled=~token_is_valid,
     )
 
 # Store LLM-generated responses
