@@ -41,23 +41,19 @@ st.sidebar.button('Clear chat history', on_click=clear_chat_history)
 st.sidebar.caption('Built by [Snowflake](https://snowflake.com/) to demonstrate [Snowflake Arctic](https://www.snowflake.com/blog/arctic-open-and-efficient-foundation-language-models-snowflake). App hosted on [Streamlit Community Cloud](https://streamlit.io/cloud). Model hosted by [Replicate](https://replicate.com/).')
 
 # Function for generating Snowflake Arctic response
-def generate_arctic_response(prompt_input):
-    string_dialogue = "You are a helpful assistant. You do not respond as 'User' or pretend to be 'User.' You only respond once as 'Assistant.'"
+def generate_arctic_response():
+    prompt = []
     for dict_message in st.session_state.messages:
         if dict_message["role"] == "user":
-            string_dialogue += "<|im_start|>user\n" + dict_message["content"] + "\n<|im_end|>\n"
+            prompt.append("<|im_start|>user\n" + dict_message["content"] + "<|im_end|>")
         else:
-            string_dialogue += "<|im_start|>assistant\n" + dict_message["content"] + "\n<|im_end|>\n"
+            prompt.append("<|im_start|>assistant\n" + dict_message["content"] + "<|im_end|>")
+    
+    prompt.append("<|im_start|>assistant")
+    prompt.append("")
     
     for event in replicate.stream("snowflake/snowflake-arctic-instruct",
-                           input={"prompt": f"""
-<|im_start|>system
-You're a helpful assistant<|im_end|>
-<|im_start|>user
-{string_dialogue}
-<|im_end|>
-<|im_start|>assistant
-""",
+                           input={"prompt": "\n".join(prompt),
                                   "prompt_template": r"{prompt}",
                                   "temperature": temperature,
                                   "top_p": top_p,
@@ -75,7 +71,7 @@ if prompt := st.chat_input(disabled=not replicate_api):
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = generate_arctic_response(prompt)
+            response = generate_arctic_response()
             full_response = st.write_stream(response)
     message = {"role": "assistant", "content": full_response}
     st.session_state.messages.append(message)
