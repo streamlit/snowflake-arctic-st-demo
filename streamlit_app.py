@@ -47,7 +47,7 @@ def generate_arctic_response(prompt_input):
         else:
             string_dialogue += "<|start_header_id|>assistant<|end_header_id|>" + dict_message["content"] + "<|eot_id|>"
     
-    for event in replicate.stream("meta/meta-llama-3-70b-instruct", # Update this line to add Snowflake Arctic
+    for event in replicate.stream("snowflake/snowflake-arctic-instruct",
                            input={"prompt": f"""
 <|begin_of_text|><|start_header_id|>system<|end_header_id|>
 You are a helpful assistant<|eot_id|>
