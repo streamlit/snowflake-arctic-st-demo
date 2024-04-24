@@ -5,7 +5,7 @@ Get the full lowdown on Arctic in Adrien Treuille's [blog post](tbd.com). Snowfl
 
 Built a cool Streamlit app using Arctic? Share it on social media with #SnowflakeArctic! We'll repost you 🫡
 
-![Streamlit app chatbot for Snowflake Arctic](ArcticStreamlit.png)
+![Streamlit app chatbot for Snowflake Arctic](Streamlit-Arctic-Screenshot.png)
 
 ## Getting your own Replicate API token
 
