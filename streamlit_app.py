@@ -23,7 +23,6 @@ with st.sidebar:
     st.subheader("Adjust model parameters")
     temperature = st.sidebar.slider('temperature', min_value=0.01, max_value=5.0, value=0.6, step=0.01)
     top_p = st.sidebar.slider('top_p', min_value=0.01, max_value=1.0, value=0.9, step=0.01)
-    max_length = st.sidebar.slider('max_length', min_value=32, max_value=128, value=120, step=8)
 
 # Store LLM-generated responses
 if "messages" not in st.session_state.keys():
@@ -57,8 +56,7 @@ def generate_arctic_response():
                                   "prompt_template": r"{prompt}",
                                   "temperature": temperature,
                                   "top_p": top_p,
-                                  "max_length": max_length,
-                                  "repetition_penalty":1}):
+                                  }):
         yield str(event)
 
 # User-provided prompt
