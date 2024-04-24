@@ -21,7 +21,7 @@ with st.sidebar:
 
     os.environ['REPLICATE_API_TOKEN'] = replicate_api
     st.subheader("Adjust model parameters")
-    temperature = st.sidebar.slider('temperature', min_value=0.01, max_value=5.0, value=0.1, step=0.01)
+    temperature = st.sidebar.slider('temperature', min_value=0.01, max_value=5.0, value=0.6, step=0.01)
     top_p = st.sidebar.slider('top_p', min_value=0.01, max_value=1.0, value=0.9, step=0.01)
     max_length = st.sidebar.slider('max_length', min_value=32, max_value=128, value=120, step=8)
 
@@ -43,16 +43,18 @@ def generate_arctic_response(prompt_input):
     string_dialogue = "You are a helpful assistant. You do not respond as 'User' or pretend to be 'User.' You only respond once as 'Assistant.'"
     for dict_message in st.session_state.messages:
         if dict_message["role"] == "user":
-            string_dialogue += "<|start_header_id|>user<|end_header_id|>" + dict_message["content"] + "<|eot_id|>"
+            string_dialogue += "<|im_start|>user\n" + dict_message["content"] + "\n<|eot_id|>\n"
         else:
-            string_dialogue += "<|start_header_id|>assistant<|end_header_id|>" + dict_message["content"] + "<|eot_id|>"
+            string_dialogue += "<|im_start|>assistant\n" + dict_message["content"] + "\n<|eot_id|>\n"
     
     for event in replicate.stream("snowflake/snowflake-arctic-instruct",
                            input={"prompt": f"""
-<|begin_of_text|><|start_header_id|>system<|end_header_id|>
-You are a helpful assistant<|eot_id|>
+<|im_start|>system
+You're a helpful assistant<|im_end|>
+<|im_start|>user
 {string_dialogue}
-<|start_header_id|>assistant<|end_header_id|>
+<|im_end|>
+<|im_start|>assistant
 """,
                                   "prompt_template": r"{prompt}",
                                   "temperature": temperature,
