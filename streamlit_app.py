@@ -94,7 +94,7 @@ def generate_arctic_response():
 # User-provided prompt
 if prompt := st.chat_input(disabled=not replicate_api):
     st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
+    with st.chat_message("user", avatar=icons[message["role"]]):
         st.write(prompt)
 
 # Generate a new response if last message is not from assistant
