@@ -12,6 +12,9 @@ from transformers import AutoTokenizer
 
 # print("Number of tokens:", num_tokens)
 
+# Set assistant icon to Snowflake logo
+icons["assistant"] = "./Snowflake_Logomark_blue.svg"
+
 # App title
 st.set_page_config(page_title="Snowflake Arctic")
 
@@ -40,7 +43,7 @@ if "messages" not in st.session_state.keys():
 
 # Display or clear chat messages
 for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
+    with st.chat_message(message["role"], avatar=icons[message["role"]]):
         st.write(message["content"])
 
 def clear_chat_history():
@@ -96,7 +99,7 @@ if prompt := st.chat_input(disabled=not replicate_api):
 
 # Generate a new response if last message is not from assistant
 if st.session_state.messages[-1]["role"] != "assistant":
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar=icons[message["role"]]):
         response = generate_arctic_response()
         full_response = st.write_stream(response)
     message = {"role": "assistant", "content": full_response}
