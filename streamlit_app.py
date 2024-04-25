@@ -13,8 +13,7 @@ from transformers import AutoTokenizer
 # print("Number of tokens:", num_tokens)
 
 # Set assistant icon to Snowflake logo
-# icons["assistant"] = "./Snowflake_Logomark_blue.svg"
-icons = {"assistant": "./Snowflake_Logomark_blue.svg"}
+icons = {"assistant": "./Snowflake_Logomark_blue.svg", "user": None}
 
 # App title
 st.set_page_config(page_title="Snowflake Arctic")
