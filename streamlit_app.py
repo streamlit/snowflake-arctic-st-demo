@@ -12,6 +12,9 @@ from transformers import AutoTokenizer
 
 # print("Number of tokens:", num_tokens)
 
+# Set assistant icon to Snowflake logo
+icons = {"assistant": "./Snowflake_Logomark_blue.svg", "user": "⛷️"}
+
 # App title
 st.set_page_config(page_title="Snowflake Arctic")
 
@@ -40,7 +43,7 @@ if "messages" not in st.session_state.keys():
 
 # Display or clear chat messages
 for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
+    with st.chat_message(message["role"], avatar=icons[message["role"]]):
         st.write(message["content"])
 
 def clear_chat_history():
@@ -49,7 +52,7 @@ st.sidebar.button('Clear chat history', on_click=clear_chat_history)
 
 st.sidebar.caption('Built by [Snowflake](https://snowflake.com/) to demonstrate [Snowflake Arctic](https://www.snowflake.com/blog/arctic-open-and-efficient-foundation-language-models-snowflake). App hosted on [Streamlit Community Cloud](https://streamlit.io/cloud). Model hosted by [Replicate](https://replicate.com/snowflake/snowflake-arctic-instruct).')
 
-@st.cache_resource
+@st.cache_resource(show_spinner=False)
 def get_tokenizer():
     """Get a tokenizer to make sure we're not sending too much text
     text to the Model. Eventually we will replace this with ArcticTokenizer
@@ -91,12 +94,12 @@ def generate_arctic_response():
 # User-provided prompt
 if prompt := st.chat_input(disabled=not replicate_api):
     st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
+    with st.chat_message("user", avatar="⛷️"):
         st.write(prompt)
 
 # Generate a new response if last message is not from assistant
 if st.session_state.messages[-1]["role"] != "assistant":
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar="./Snowflake_Logomark_blue.svg"):
         response = generate_arctic_response()
         full_response = st.write_stream(response)
     message = {"role": "assistant", "content": full_response}
