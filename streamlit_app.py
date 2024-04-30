@@ -12,37 +12,49 @@ icons = {"assistant": "./Snowflake_Logomark_blue.svg", "user": "⛷️"}
 # App title
 st.set_page_config(page_title="Snowflake Arctic")
 
-# Replicate Credentials
-with st.sidebar:
-    st.title('Snowflake Arctic')
-    if 'REPLICATE_API_TOKEN' in st.secrets:
-        replicate_api = st.secrets['REPLICATE_API_TOKEN']
-    else:
-        replicate_api = st.text_input('Enter Replicate API token:', type='password')
-        if not (replicate_api.startswith('r8_') and len(replicate_api)==40):
-            st.warning('Please enter your Replicate API token.', icon='⚠️')
-            st.markdown("**Don't have an API token?** Head over to [Replicate](https://replicate.com) to sign up for one.")
-
-    os.environ['REPLICATE_API_TOKEN'] = replicate_api
-    st.subheader("Adjust model parameters")
-    temperature = st.sidebar.slider('temperature', min_value=0.01, max_value=5.0, value=0.3, step=0.01)
-    top_p = st.sidebar.slider('top_p', min_value=0.01, max_value=1.0, value=0.9, step=0.01)
-
-# Store LLM-generated responses
-if "messages" not in st.session_state.keys():
+def clear_chat_history():
     st.session_state.messages = [{"role": "assistant", "content": "Hi. I'm Arctic, a new, efficient, intelligent, and truly open language model created by Snowflake AI Research. Ask me anything."}]
+
+def get_replicate_api_token():
+    # Disabling the UI-based token input for now
+
+    # if 'REPLICATE_API_TOKEN' in st.secret:
+    #     replicate_api = 
+    # else:
+    #     replicate_api = st.text_input('Enter Replicate API token:', type='password')
+    #     if not (replicate_api.startswith('r8_') and len(replicate_api)==40):
+    #         st.warning('Please enter your Replicate API token.', icon='⚠️')
+    #         st.markdown("**Don't have an API token?** Head over to [Replicate](https://replicate.com) to sign up for one.")
+    os.environ['REPLICATE_API_TOKEN'] = st.secrets['REPLICATE_API_TOKEN']
+
+def display_sidebar_ui():
+    with st.sidebar:
+        st.title('Snowflake Arctic')
+        st.subheader("Adjust model parameters")
+        st.slider('temperature', min_value=0.01, max_value=5.0, value=0.3,
+                                step=0.01, key="temperature")
+        st.slider('top_p', min_value=0.01, max_value=1.0, value=0.9, step=0.01,
+                          key="top_p")
+
+        st.sidebar.button('Clear chat history', on_click=clear_chat_history)
+
+        st.subheader("New!")
+        st.sidebar.caption('Build your own app powered by Arctic and [enter to win](https://arctic-streamlit-hackathon.devpost.com/) $10k in prizes.')
+
+        st.subheader("About")
+        st.caption('Built by [Snowflake](https://snowflake.com/) to demonstrate [Snowflake Arctic](https://www.snowflake.com/blog/arctic-open-and-efficient-foundation-language-models-snowflake). App hosted on [Streamlit Community Cloud](https://streamlit.io/cloud). Model hosted by [Replicate](https://replicate.com/snowflake/snowflake-arctic-instruct).')
+
+
+def init_chat_history():
+    """Create a st.session_state.messages list to store chat messages"""
+    if "messages" not in st.session_state:
+        clear_chat_history()
 
 # Display or clear chat messages
 for message in st.session_state.messages:
     with st.chat_message(message["role"], avatar=icons[message["role"]]):
         st.write(message["content"])
 
-def clear_chat_history():
-    st.session_state.messages = [{"role": "assistant", "content": "Hi. I'm Arctic, a new, efficient, intelligent, and truly open language model created by Snowflake AI Research. Ask me anything."}]
-st.sidebar.button('Clear chat history', on_click=clear_chat_history)
-
-st.sidebar.caption('Built by [Snowflake](https://snowflake.com/) to demonstrate [Snowflake Arctic](https://www.snowflake.com/blog/arctic-open-and-efficient-foundation-language-models-snowflake). App hosted on [Streamlit Community Cloud](https://streamlit.io/cloud). Model hosted by [Replicate](https://replicate.com/snowflake/snowflake-arctic-instruct).')
-st.sidebar.caption('Build your own app powered by Arctic and [enter to win](https://arctic-streamlit-hackathon.devpost.com/) $10k in prizes.')
 
 @st.cache_resource(show_spinner=False)
 def get_tokenizer():
@@ -88,6 +100,7 @@ def generate_arctic_response():
 
     num_tokens = get_num_tokens(prompt_str)
     if num_tokens - st.session_state.token_count > 50:
+        st.success("Checking for safety...")
         if not is_safe():
             st.stop()
 
@@ -101,21 +114,31 @@ def generate_arctic_response():
     for event in replicate.stream("snowflake/snowflake-arctic-instruct",
                            input={"prompt": prompt_str,
                                   "prompt_template": r"{prompt}",
-                                  "temperature": temperature,
-                                  "top_p": top_p,
+                                  "temperature": st.session_state.temperature,
+                                  "top_p": st.session_state.top_p,
                                   }):
+        st.warning(str(event))
         yield str(event)
 
-# User-provided prompt
-if prompt := st.chat_input(disabled=not replicate_api):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user", avatar="⛷️"):
-        st.write(prompt)
+def main():
+    get_replicate_api_token()
+    display_sidebar_ui()
+    init_chat_history()
 
-# Generate a new response if last message is not from assistant
-if st.session_state.messages[-1]["role"] != "assistant":
-    with st.chat_message("assistant", avatar="./Snowflake_Logomark_blue.svg"):
-        response = generate_arctic_response()
-        full_response = st.write_stream(response)
-    message = {"role": "assistant", "content": full_response}
-    st.session_state.messages.append(message)
+    # User-provided prompt
+    if prompt := st.chat_input(disabled=False):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user", avatar="⛷️"):
+            st.write(prompt)
+
+    # Generate a new response if last message is not from assistant
+    if st.session_state.messages[-1]["role"] != "assistant":
+        with st.chat_message("assistant", avatar="./Snowflake_Logomark_blue.svg"):
+            response = generate_arctic_response()
+            full_response = st.write_stream(response)
+        message = {"role": "assistant", "content": full_response}
+        st.session_state.messages.append(message)
+
+
+if __name__ == "__main__":
+    main()
