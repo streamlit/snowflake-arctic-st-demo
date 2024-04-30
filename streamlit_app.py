@@ -91,11 +91,10 @@ def generate_arctic_response():
     num_tokens = get_num_tokens(prompt_str)
     if num_tokens - st.session_state.token_count > 100:
         safety_check = is_safe()
+        if not safety_check:
+            return
 
     st.session_state.token_count = num_tokens
-
-    if not safety_check:
-        return
     
     if num_tokens >= 3072:
         st.error("Conversation length too long. Please keep it under 3072 tokens.")
