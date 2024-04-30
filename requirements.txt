@@ -2,3 +2,4 @@ streamlit
 replicate
 transformers
 torch
+accelerate
