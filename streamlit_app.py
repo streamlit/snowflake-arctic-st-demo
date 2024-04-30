@@ -88,8 +88,7 @@ def generate_arctic_response():
 
     num_tokens = get_num_tokens(prompt_str)
     if num_tokens - st.session_state.token_count > 100:
-        safety_check = is_safe()
-        if not safety_check:
+        if not is_safe():
             return
 
     st.session_state.token_count = num_tokens
