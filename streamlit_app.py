@@ -87,7 +87,7 @@ def generate_arctic_response():
     prompt_str = "\n".join(prompt)
 
     num_tokens = get_num_tokens(prompt_str)
-    if num_tokens - st.session_state.token_count > 100:
+    if num_tokens - st.session_state.token_count > 50:
         if not is_safe():
             return
 
