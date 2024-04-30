@@ -105,7 +105,7 @@ def generate_arctic_response():
     prompt.append("")
     prompt_str = "\n".join(prompt)
 
-    st.write("Num tokens" + get_num_token(prompt_str))
+    st.write("Num tokens" + get_num_tokens(prompt_str))
     
     if get_num_tokens(prompt_str) >= 3072:
         st.error("Conversation length too long. Please keep it under 3072 tokens.")
