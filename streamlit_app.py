@@ -1,7 +1,7 @@
 import streamlit as st
 import replicate
 import os
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, AutoModelForCausalLM
 from huggingface_hub import login
 import torch
 
