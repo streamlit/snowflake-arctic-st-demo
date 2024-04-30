@@ -62,7 +62,7 @@ def is_safe():
         input=input
     )
     if "unsafe" in output:
-        st.warning("Your query violated our safety guidelines",icon="⚠️")
+        st.warning("Your query violated our safety guidelines.",icon="⚠️")
         return False
 
     return True
@@ -86,7 +86,6 @@ def generate_arctic_response():
     prompt.append("")
     prompt_str = "\n".join(prompt)
 
-    # st.write("Num tokens" + str(get_num_tokens(prompt_str)))
     num_tokens = get_num_tokens(prompt_str)
     if num_tokens - st.session_state.token_count > 100:
         safety_check = is_safe()
