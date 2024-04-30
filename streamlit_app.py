@@ -2,6 +2,23 @@ import streamlit as st
 import replicate
 import os
 from transformers import AutoTokenizer
+from huggingface_hub import login
+
+model_id_llamaguard = "meta-llama/LlamaGuard-7b"
+device = "cuda"
+dtype = torch.bfloat16
+
+tokenizer_llamaguard = AutoTokenizer.from_pretrained(model_id)
+model_llamaguard = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=dtype, device_map=device)
+
+def moderate(chat):
+    input_ids = tokenizer_llamaguard.apply_chat_template(chat, return_tensors="pt").to(device)
+    output = model_llamaguard.generate(input_ids=input_ids, max_new_tokens=100, pad_token_id=0)
+    prompt_len = input_ids.shape[-1]
+    return tokenizer_llamaguard.decode(output[0][prompt_len:], skip_special_tokens=True)
+
+hf_token = st.secrets["hf_token"]
+login(token = hf_token)
 
 # # Assuming you have a specific tokenizers for Llama; if not, use an appropriate one like this
 # tokenizer = AutoTokenizer.from_pretrained("allenai/llama")
@@ -60,6 +77,13 @@ def get_tokenizer():
     """
     return AutoTokenizer.from_pretrained("huggyllama/llama-7b")
 
+def moderate_with_template(chat):
+    tokenizer = get_tokenizer()
+    input_ids = tokenizer.apply_chat_template(chat, return_tensors="pt").to(device)
+    output = model.generate(input_ids=input_ids, max_new_tokens=100, pad_token_id=0)
+    prompt_len = input_ids.shape[-1]
+    return tokenizer.decode(output[0][prompt_len:], skip_special_tokens=True)
+
 def get_num_tokens(prompt):
     """Get the number of tokens in a given prompt"""
     tokenizer = get_tokenizer()
@@ -94,6 +118,7 @@ def generate_arctic_response():
 
 # User-provided prompt
 if prompt := st.chat_input(disabled=not replicate_api):
+    st.write(moderate(prompt))
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user", avatar="⛷️"):
         st.write(prompt)
