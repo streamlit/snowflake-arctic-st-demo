@@ -51,7 +51,7 @@ def get_tokenizer():
     """
     return AutoTokenizer.from_pretrained("huggyllama/llama-7b")
 
-def guardrails():
+def is_safe():
     st.write("called guardrails")
     conversation_history = st.session_state.messages
     input = {
@@ -62,15 +62,11 @@ def guardrails():
         "tomasmcm/llamaguard-7b:86a2d8b79335b1557fc5709d237113aa34e3ae391ee46a68cc8440180151903d",
         input=input
     )
-    # st.write(output)
-    # st.markdown(output)
-    print(output)
-    # if output == 'safe':
-    #     st.write("safe")
-    # if output != 'safe':
-    #     st.write("not safe")
-    # if output != "safe":
-    #     st.warning("Your query violated our safety guidelines",icon="⚠️")
+    if "unsafe" in output:
+        st.warning("Your query violated our safety guidelines",icon="⚠️")
+        return False
+
+    return True
 
 def get_num_tokens(prompt):
     """Get the number of tokens in a given prompt"""
@@ -94,14 +90,18 @@ def generate_arctic_response():
     # st.write("Num tokens" + str(get_num_tokens(prompt_str)))
     num_tokens = get_num_tokens(prompt_str)
     if num_tokens - st.session_state.token_count > 100:
-        guardrails()
+        safety_check = is_safe()
+
     st.session_state.token_count = num_tokens
+
+    if not safety_check:
+        return
     
     if num_tokens >= 3072:
         st.error("Conversation length too long. Please keep it under 3072 tokens.")
         st.button('Clear chat history', on_click=clear_chat_history, key="clear_chat_history")
         st.stop()
-
+    
     for event in replicate.stream("snowflake/snowflake-arctic-instruct",
                            input={"prompt": prompt_str,
                                   "prompt_template": r"{prompt}",
