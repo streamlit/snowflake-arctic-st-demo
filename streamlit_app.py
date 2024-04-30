@@ -87,7 +87,8 @@ def guardrails():
         "tomasmcm/llamaguard-7b:86a2d8b79335b1557fc5709d237113aa34e3ae391ee46a68cc8440180151903d",
         input=input
     )
-    st.write(output)
+    if output != "safe":
+        st.warning("Your query violated our safety guidelines",icon="⚠️")
 
 def get_num_tokens(prompt):
     """Get the number of tokens in a given prompt"""
@@ -110,8 +111,7 @@ def generate_arctic_response():
 
     # st.write("Num tokens" + str(get_num_tokens(prompt_str)))
     num_tokens = get_num_tokens(prompt_str)
-    token_difference = num_tokens - st.session_state.token_count
-    if token_difference > 100:
+    if num_tokens - st.session_state.token_count > 100:
         guardrails()
     st.session_state.token_count = num_tokens
     
