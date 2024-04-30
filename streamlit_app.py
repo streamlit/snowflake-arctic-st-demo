@@ -88,8 +88,9 @@ def guardrails():
         input=input
     )
     st.write(output)
-    if output != "safe":
-        st.warning("Your query violated our safety guidelines",icon="⚠️")
+    st.markdown(output)
+    # if output != "safe":
+    #     st.warning("Your query violated our safety guidelines",icon="⚠️")
 
 def get_num_tokens(prompt):
     """Get the number of tokens in a given prompt"""
