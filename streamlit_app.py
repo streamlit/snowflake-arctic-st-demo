@@ -58,7 +58,7 @@ st.write(output)
 icons = {"assistant": "./Snowflake_Logomark_blue.svg", "user": "⛷️"}
 
 # App title
-st.set_page_config(page_title="Snowflake Arctic")
+# st.set_page_config(page_title="Snowflake Arctic")
 
 # Replicate Credentials
 with st.sidebar:
