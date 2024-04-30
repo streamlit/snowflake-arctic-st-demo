@@ -5,6 +5,9 @@ from transformers import AutoTokenizer
 from huggingface_hub import login
 import torch
 
+hf_token = st.secrets["hf_token"]
+login(token = hf_token)
+
 model_id_llamaguard = "meta-llama/LlamaGuard-7b"
 device = "cuda"
 dtype = torch.bfloat16
@@ -17,9 +20,6 @@ def moderate(chat):
     output = model_llamaguard.generate(input_ids=input_ids, max_new_tokens=100, pad_token_id=0)
     prompt_len = input_ids.shape[-1]
     return tokenizer_llamaguard.decode(output[0][prompt_len:], skip_special_tokens=True)
-
-hf_token = st.secrets["hf_token"]
-login(token = hf_token)
 
 # # Assuming you have a specific tokenizers for Llama; if not, use an appropriate one like this
 # tokenizer = AutoTokenizer.from_pretrained("allenai/llama")
