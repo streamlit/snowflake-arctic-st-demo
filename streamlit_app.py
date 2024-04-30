@@ -3,6 +3,7 @@ import replicate
 import os
 from transformers import AutoTokenizer
 from huggingface_hub import login
+import torch
 
 model_id_llamaguard = "meta-llama/LlamaGuard-7b"
 device = "cuda"
