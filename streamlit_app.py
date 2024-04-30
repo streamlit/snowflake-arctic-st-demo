@@ -9,8 +9,8 @@ model_id_llamaguard = "meta-llama/LlamaGuard-7b"
 device = "cuda"
 dtype = torch.bfloat16
 
-tokenizer_llamaguard = AutoTokenizer.from_pretrained(model_id)
-model_llamaguard = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=dtype, device_map=device)
+tokenizer_llamaguard = AutoTokenizer.from_pretrained(model_id_llamaguard)
+model_llamaguard = AutoModelForCausalLM.from_pretrained(model_id_llamaguard, torch_dtype=dtype, device_map=device)
 
 def moderate(chat):
     input_ids = tokenizer_llamaguard.apply_chat_template(chat, return_tensors="pt").to(device)
