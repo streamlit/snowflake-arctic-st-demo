@@ -4,6 +4,7 @@ import os
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from huggingface_hub import login
 import torch
+import accelerate
 
 hf_token = st.secrets["hf_token"]
 login(token = hf_token)
