@@ -64,7 +64,7 @@ def guardrails():
     )
     # st.write(output)
     # st.markdown(output)
-    st.print(output)
+    print(output)
     # if output == 'safe':
     #     st.write("safe")
     # if output != 'safe':
