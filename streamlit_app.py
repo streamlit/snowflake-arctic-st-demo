@@ -62,12 +62,13 @@ def guardrails():
         "tomasmcm/llamaguard-7b:86a2d8b79335b1557fc5709d237113aa34e3ae391ee46a68cc8440180151903d",
         input=input
     )
-    st.write(output)
-    st.markdown(output)
-    if output == 'safe':
-        st.write("safe")
-    if output != 'safe':
-        st.write("not safe")
+    # st.write(output)
+    # st.markdown(output)
+    st.print(output)
+    # if output == 'safe':
+    #     st.write("safe")
+    # if output != 'safe':
+    #     st.write("not safe")
     # if output != "safe":
     #     st.warning("Your query violated our safety guidelines",icon="⚠️")
 
