@@ -48,9 +48,18 @@ Create a `.streamlit` folder with a `secrets.toml` file inside.
    Alternatively, you can enter your Replicate API token via the `st.text_input` widget in the app itself (once you're running the app).
 
 4. **Run the Streamlit app**
+Note: there are two versions of the app included in this repo. `simple_app.py` is a simpler app which passes user input to Arctic and returns Arctic's response. `streamlit_app.py` has built-in guardrails, meaning that it checks user input to ensure queries are safe (i.e. users are not asking Arctic for instructions on how to commit illegal activity, etc.).
+
+To run the version of the app that includes guardrails, enter:
    ```bash
    cd ..
    streamlit run streamlit_app.py
+   ```
+
+To run the simpler version of the app, enter:
+   ```bash
+   cd ..
+   streamlit run simple_app.py
    ```
 
 ### Deployment
