@@ -14,20 +14,7 @@ def main():
     display_chat_messages()
     get_and_process_prompt()
 
-def clear_chat_history():
-    st.session_state.messages = [{"role": "assistant", "content": "Hi. I'm Arctic, a new, efficient, intelligent, and truly open language model created by Snowflake AI Research. Ask me anything."}]
-    st.session_state.chat_aborted = False
-
 def get_replicate_api_token():
-    # Disabling the UI-based token input for now
-
-    # if 'REPLICATE_API_TOKEN' in st.secret:
-    #     replicate_api = 
-    # else:
-    #     replicate_api = st.text_input('Enter Replicate API token:', type='password')
-    #     if not (replicate_api.startswith('r8_') and len(replicate_api)==40):
-    #         st.warning('Please enter your Replicate API token.', icon='⚠️')
-    #         st.markdown("**Don't have an API token?** Head over to [Replicate](https://replicate.com) to sign up for one.")
     os.environ['REPLICATE_API_TOKEN'] = st.secrets['REPLICATE_API_TOKEN']
 
 def display_sidebar_ui():
@@ -50,11 +37,14 @@ def display_sidebar_ui():
         # st.subheader("Debug")
         # st.write(st.session_state)
 
+def clear_chat_history():
+    st.session_state.messages = [{"role": "assistant", "content": "Hi. I'm Arctic, a new, efficient, intelligent, and truly open language model created by Snowflake AI Research. Ask me anything."}]
+    st.session_state.chat_aborted = False
+
 def init_chat_history():
     """Create a st.session_state.messages list to store chat messages"""
     if "messages" not in st.session_state:
         clear_chat_history()
-        # with st.spinner("Loading guardrails..."):
         check_safety()
 
 def display_chat_messages():
@@ -77,9 +67,9 @@ def get_tokenizer():
 def get_llamaguard_deployment():
     return replicate.deployments.get("snowflake/llamaguard")
 
-def check_safety() -> bool: 
-    # # Uncomment to skip safety checks
-    # return True
+def check_safety(disable=False) -> bool: 
+    if disable:
+        return True
 
     # with st.spinner("Checking prompt safety ..."):
     deployment = get_llamaguard_deployment()
@@ -162,7 +152,7 @@ def generate_arctic_response():
 
     # Final safety check...
     if not check_safety():
-        abort_chat("I cannot reply to this question.")
+        abort_chat("I cannot answer this question.")
 
 if __name__ == "__main__":
     main()
