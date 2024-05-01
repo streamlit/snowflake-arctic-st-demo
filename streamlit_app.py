@@ -66,7 +66,6 @@ def display_chat_messages():
         with st.chat_message(message["role"], avatar=icons[message["role"]]):
             st.write(message["content"])
 
-
 @st.cache_resource(show_spinner=False)
 def get_tokenizer():
     """Get a tokenizer to make sure we're not sending too much text
@@ -157,7 +156,7 @@ def generate_arctic_response():
                                   })):
         if (event_index + 0) % 50 == 0:
             if not check_safety():
-                abort_chat("I cannot reply to this question.")
+                abort_chat("I cannot answer this question.")
         st.session_state.messages[-1]["content"] += str(event)
         yield str(event)
 
