@@ -7,7 +7,7 @@ Built a cool Streamlit app using Arctic? Share it on social media with #Snowflak
 
 ![Streamlit app chatbot for Snowflake Arctic](Streamlit-Arctic-Screenshot.png)
 
-## Getting your own Replicate API token
+## Getting your own Replicate API token err
 
 To use this app, you'll need to get your own [Replicate](https://replicate.com/) API token.
 
