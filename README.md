@@ -22,8 +22,8 @@ After creating a Replicate account, you can access your API token from [this pag
 ### Installation
 1. **Clone this repository**
    ```bash
-   git clone https://github.com/yourusername/snowflake-arctic-chatbot.git
-   cd snowflake-arctic-chatbot
+   git clone https://github.com/yourusername/snowflake-arctic-st-demo.git
+   cd snowflake-arctic-st-demo
    ```
 
 2. **Install requirements**
