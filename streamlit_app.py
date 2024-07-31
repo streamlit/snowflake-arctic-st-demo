@@ -18,6 +18,8 @@ icons = {"assistant": "./Snowflake_Logomark_blue.svg", "user": "⛷️"}
 # App title
 st.set_page_config(page_title="Snowflake Arctic")
 
+st.warning('Please note _this is a backup app_, created to handle load of the initial release. Uptime and functionality are not guaranteed. \n\n For the production version of this app, please see https://arctic.streamlit.app', icon="⚠️")
+
 # Replicate Credentials
 with st.sidebar:
     st.title('Snowflake Arctic')
